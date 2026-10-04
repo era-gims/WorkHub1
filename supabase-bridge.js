@@ -199,6 +199,11 @@
     }
     await syncProfile(db);
   }
+  window.workhubSyncNow = async function () {
+    clearTimeout(saveTimer);
+    if (!currentAuthUser) throw new Error('Your WorkHub session is not connected to Supabase. Sign out and sign back in, then try again.');
+    await syncDb();
+  };
   let lastSyncErrorAt = 0;
   function queueSync() {
     clearTimeout(saveTimer);

@@ -1,4 +1,3 @@
-==================== supabase-bridge.js ====================
 /* WorkHub Supabase browser adapter. Requires supabase-config.js and supabase-js v2. */
 (async function () {
   const cfg = window.WORKHUB_SUPABASE;

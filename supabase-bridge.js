@@ -1,3 +1,4 @@
+==================== supabase-bridge.js ====================
 /* WorkHub Supabase browser adapter. Requires supabase-config.js and supabase-js v2. */
 (async function () {
   const cfg = window.WORKHUB_SUPABASE;
@@ -119,7 +120,10 @@
           if (entity === 'serviceRequests' || entity === 'bookings') item.providerEmail = authUser.email.toLowerCase();
           if (entity === 'gigApps') item.ownerEmail = authUser.email.toLowerCase();
           if (entity === 'orders') item.recipientEmail = authUser.email.toLowerCase();
-          if (entity === 'messages') item.to = authUser.email.toLowerCase();
+          if (entity === 'messages') {
+            item.to = authUser.email.toLowerCase();
+            item.from = emailForId(row.owner_id, [...mergedUsers.values()]);
+          }
           if (entity === 'notifications') item.email = authUser.email.toLowerCase();
         }
         if (row.owner_id === authUser.id) item._cloudOwnerEmail = authUser.email.toLowerCase();

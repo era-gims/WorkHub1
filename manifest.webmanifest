@@ -1,0 +1,10 @@
+{
+  "name": "WorkHub — opportunities, all in one place",
+  "short_name": "WorkHub",
+  "description": "Find work, hire talent, offer services, and discover gigs.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7f1",
+  "theme_color": "#183d32",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

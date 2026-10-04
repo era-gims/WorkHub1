@@ -1,4 +1,3 @@
-==================== service-worker.js ====================
 const CACHE = 'workhub-v4';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg', './supabase-config.js', './supabase-bridge.js'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES))));
@@ -10,5 +9,3 @@ self.addEventListener('fetch', event => {
     return response;
   }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html'))));
 });
-
-

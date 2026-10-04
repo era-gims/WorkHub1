@@ -204,6 +204,32 @@
     if (!currentAuthUser) throw new Error('Your WorkHub session is not connected to Supabase. Sign out and sign back in, then try again.');
     await syncDb();
   };
+  window.workhubPublishJob = async function (job) {
+    const { data: { user: authUser }, error: authError } = await client.auth.getUser();
+    if (authError) throw authError;
+    if (!authUser) throw new Error('Your sign-in session has expired. Sign out and sign back in.');
+    currentAuthUser = authUser;
+    const payload = { ...job };
+    delete payload.ownerEmail;
+    delete payload._cloudOwnerId;
+    delete payload._cloudRecordId;
+    const row = {
+      entity: 'jobs',
+      record_key: String(job.id),
+      owner_id: authUser.id,
+      recipient_id: null,
+      is_public: job.status !== 'Closed',
+      data: payload,
+      updated_at: new Date().toISOString()
+    };
+    const { data, error } = await client.from('workhub_records')
+      .upsert(row, { onConflict: 'owner_id,entity,record_key' })
+      .select('id,entity,record_key,owner_id,recipient_id,is_public,data,updated_at')
+      .single();
+    if (error) throw error;
+    known.set(`jobs:${String(job.id)}`, data);
+    return data;
+  };
   let lastSyncErrorAt = 0;
   function queueSync() {
     clearTimeout(saveTimer);
